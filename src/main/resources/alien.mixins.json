@@ -69,7 +69,6 @@
     "mixins.sodium.SodiumBlockRendererMixin",
     "mixins.sodium.SodiumFluidRendererImplMixin",
     "mixins.MixinSoundSystem",
-    "mixins.MixinTitleScreen",
     "mixins.MixinTotemParticle",
     "mixins.MixinWorld",
     "mixins.MixinWorldRenderer"

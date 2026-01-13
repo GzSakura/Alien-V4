@@ -38,6 +38,7 @@ import net.minecraft.sound.SoundEvents;
 public class ClickGui
 extends Module {
     private static ClickGui INSTANCE;
+    public final EnumSetting<Style> style = this.add(new EnumSetting<Style>("Style", Style.Default).injectTask(this::updateStyle));
     public final BooleanSetting autoSave = this.add(new BooleanSetting("AutoSave", true));
     public final BooleanSetting font = this.add(new BooleanSetting("Font", true));
     public final BooleanSetting shadow = this.add(new BooleanSetting("Shadow", true));
@@ -72,7 +73,7 @@ extends Module {
     public double alphaValue;
     private final Animation animation = new Animation();
     public static String key;
-    private boolean paletteApplied = false;
+    private boolean styleApplied = false;
 
     public ClickGui() {
         super("ClickGui", Module.Category.Client);
@@ -137,7 +138,10 @@ extends Module {
 
     @EventListener
     public void onUpdate(UpdateEvent event) {
-        this.applyPaletteOnce();
+        if (!this.styleApplied) {
+            this.updateStyle();
+            this.styleApplied = true;
+        }
         this.updateColor();
         if (!(ClickGui.mc.currentScreen instanceof ClickGuiScreen)) {
             this.disable();
@@ -151,19 +155,34 @@ extends Module {
         Button.enableTextColor = this.enableTextColor.getValue().getRGB();
     }
 
-    private void applyPaletteOnce() {
-        if (this.paletteApplied) {
-            return;
+    public void updateStyle() {
+        switch (this.style.getValue()) {
+            case Default -> {
+                this.color.setValue(new Color(0, 120, 212));
+                this.hoverColor.setValue(new Color(230, 242, 251, 200));
+                this.defaultColor.setValue(new Color(255, 255, 255, 236));
+                this.defaultTextColor.setValue(new Color(30, 30, 30));
+                this.enableTextColor.setValue(new Color(24, 24, 24));
+                this.backGround.setValue(new Color(255, 255, 255, 236));
+                this.tint.setValue(new Color(0, 120, 212, 36));
+                this.endColor.setValue(new Color(0, 120, 212, 18));
+            }
+            case Dark -> {
+                this.color.setValue(new Color(0, 120, 212));
+                this.hoverColor.setValue(new Color(50, 50, 50, 200));
+                this.defaultColor.setValue(new Color(30, 30, 30, 236));
+                this.defaultTextColor.setValue(new Color(220, 220, 220));
+                this.enableTextColor.setValue(new Color(255, 255, 255));
+                this.backGround.setValue(new Color(30, 30, 30, 236));
+                this.tint.setValue(new Color(0, 120, 212, 36));
+                this.endColor.setValue(new Color(0, 120, 212, 18));
+            }
         }
-        this.color.setValue(new Color(0, 120, 212));
-        this.hoverColor.setValue(new Color(230, 242, 251, 200));
-        this.defaultColor.setValue(new Color(255, 255, 255, 236));
-        this.defaultTextColor.setValue(new Color(30, 30, 30));
-        this.enableTextColor.setValue(new Color(24, 24, 24));
-        this.backGround.setValue(new Color(255, 255, 255, 236));
-        this.tint.setValue(new Color(0, 120, 212, 36));
-        this.endColor.setValue(new Color(0, 120, 212, 18));
-        this.paletteApplied = true;
+    }
+
+    public enum Style {
+        Default,
+        Dark
     }
 
     static {
