@@ -63,16 +63,16 @@ extends Mod {
         this.context = context;
         this.drag(mouseX, mouseY);
         float totalItemHeight = this.open ? this.getTotalItemHeight() - 2.0f : 0.0f;
-        int color = ColorUtil.injectAlpha(ClickGui.getInstance().color.getValue().getRGB(), ClickGui.getInstance().topAlpha.getValueInt());
-        Render2DUtil.drawRoundedRect(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 5.0f, 4.0f, new Color(color));
-        Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 5.0f, 4.0f, new Color(220, 224, 230, 160), 48);
+        Color topColor = ColorUtil.injectAlpha(ClickGui.getInstance().color.getValue(), ClickGui.getInstance().topAlpha.getValueInt());
+        Render2DUtil.drawRect(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 5.0f, topColor);
+        Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 5.0f, new Color(0, 0, 0, 0), new Color(ClickGui.getInstance().hoverColor.getValue().getRGB()));
         if (this.open) {
             if (ClickGui.getInstance().blur.getValue()) {
                 Alien.BLUR.applyBlur(1.0f + (ClickGui.getInstance().radius.getValueFloat() - 1.0f) * (float)ClickGui.getInstance().alphaValue, this.x, (float)this.y + (float)this.height - 5.0f, this.width, totalItemHeight + 5.0f);
             }
             if (ClickGui.getInstance().backGround.booleanValue) {
-                Render2DUtil.drawRoundedRect(context.getMatrices(), this.x, (float)this.y + (float)this.height - 5.0f, this.width, (float)(this.y + this.height) + totalItemHeight - ((float)this.y + (float)this.height - 5.0f), 4.0f, ClickGui.getInstance().backGround.getValue());
-                Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x, (float)this.y + (float)this.height - 5.0f, this.width, (float)(this.y + this.height) + totalItemHeight - ((float)this.y + (float)this.height - 5.0f), 4.0f, new Color(220, 224, 230, 160), 48);
+                Render2DUtil.drawRect(context.getMatrices(), this.x, (float)this.y + (float)this.height - 5.0f, this.width, (float)(this.y + this.height) + totalItemHeight - ((float)this.y + (float)this.height - 5.0f), ColorUtil.injectAlpha(ClickGui.getInstance().backGround.getValue(), ClickGui.getInstance().backgroundAlpha.getValueInt()));
+                Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x, (float)this.y + (float)this.height - 5.0f, this.width, (float)(this.y + this.height) + totalItemHeight - ((float)this.y + (float)this.height - 5.0f), new Color(0, 0, 0, 0), new Color(ClickGui.getInstance().hoverColor.getValue().getRGB()));
             }
             if (ClickGui.getInstance().line.getValue()) {
                 Render2DUtil.drawLine(context.getMatrices(), (float)this.x + 0.2f, (float)(this.y + this.height) + totalItemHeight, (float)this.x + 0.2f, (float)this.y + (float)this.height - 5.0f, ColorUtil.injectAlpha(ClickGui.getInstance().color.getValue().getRGB(), ClickGui.getInstance().topAlpha.getValueInt()));

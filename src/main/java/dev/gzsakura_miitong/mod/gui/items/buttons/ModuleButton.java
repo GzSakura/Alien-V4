@@ -81,18 +81,20 @@ extends Button {
         boolean hovered = this.isHovering(mouseX, mouseY);
         boolean pressed = this.getState();
         Color accent = ClickGui.getInstance().activeColor.getValue();
-        Color baseFill = pressed ? new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), Math.min(230, ClickGui.getInstance().hoverAlpha.getValueInt())) : (hovered ? new Color(246, 248, 250, ClickGui.getInstance().hoverAlpha.getValueInt()) : new Color(255, 255, 255, 232));
-        Render2DUtil.drawRoundedRect(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 0.5f, 4.2f, baseFill);
-        Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 0.5f, 4.2f, pressed ? new Color(255, 255, 255, 200) : new Color(220, 224, 230, 180), 48);
+        Color defaultColor = ClickGui.getInstance().defaultColor.getValue();
+        Color hoverColor = ClickGui.getInstance().hoverColor.getValue();
+        Color baseFill = pressed ? new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), Math.min(230, ClickGui.getInstance().hoverAlpha.getValueInt())) : (hovered ? new Color(hoverColor.getRed(), hoverColor.getGreen(), hoverColor.getBlue(), ClickGui.getInstance().hoverAlpha.getValueInt()) : new Color(defaultColor.getRed(), defaultColor.getGreen(), defaultColor.getBlue(), defaultColor.getAlpha()));
+        Render2DUtil.drawRect(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 0.5f, baseFill);
+        Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x, this.y, this.width, (float)this.height - 0.5f, new Color(0, 0, 0, 0), pressed ? new Color(255, 255, 255, 200) : new Color(hoverColor.getRed(), hoverColor.getGreen(), hoverColor.getBlue(), 180));
         if (pressed) {
             float ih = (float)this.height - 2.0f;
             Render2DUtil.drawGlow(context.getMatrices(), this.x - 2.0f, this.y - 2.0f, (float)this.width + 4.0f, (float)this.height + 4.0f, new Color(0, 0, 0, 20).getRGB());
             Render2DUtil.verticalGradient(context.getMatrices(), this.x + 2.0f, this.y + 2.0f, this.x + (float)this.width - 2.0f, this.y + ih, new Color(255, 255, 255, 64), new Color(0, 0, 0, 56));
-            Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x + 1.2f, this.y + 1.2f, (float)this.width - 2.4f, ih - 1.2f, 3.6f, new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), 150), 96);
-            Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x + 2.0f, this.y + 2.0f, (float)this.width - 4.0f, ih - 2.0f, 3.2f, new Color(255, 255, 255, 120), 96);
-            Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x + 2.0f, this.y + 2.8f, (float)this.width - 4.0f, ih - 2.8f, 3.2f, new Color(0, 0, 0, 70), 96);
+            Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x + 1.2f, this.y + 1.2f, (float)this.width - 2.4f, ih - 1.2f, new Color(0, 0, 0, 0), new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), 150));
+            Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x + 2.0f, this.y + 2.0f, (float)this.width - 4.0f, ih - 2.0f, new Color(0, 0, 0, 0), new Color(255, 255, 255, 120));
+            Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x + 2.0f, this.y + 2.8f, (float)this.width - 4.0f, ih - 2.8f, new Color(0, 0, 0, 0), new Color(0, 0, 0, 70));
         } else if (hovered) {
-            Render2DUtil.drawRoundedStroke(context.getMatrices(), this.x - 0.5f, this.y - 0.5f, (float)this.width + 1.0f, (float)this.height + 1.0f, 4.2f, new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), 160), 96);
+            Render2DUtil.drawRectWithOutline(context.getMatrices(), this.x - 0.5f, this.y - 0.5f, (float)this.width + 1.0f, (float)this.height + 1.0f, new Color(0, 0, 0, 0), new Color(accent.getRed(), accent.getGreen(), accent.getBlue(), 160));
         }
         this.drawString(this.module.getDisplayName(), (double)(this.x + 2.3f), (double)(this.y - 2.0f - (float)ClickGuiScreen.getInstance().getTextOffset()), this.getState() ? enableTextColor : defaultTextColor);
         if (ClickGui.getInstance().gear.booleanValue) {

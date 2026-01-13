@@ -38,7 +38,7 @@ import net.minecraft.sound.SoundEvents;
 public class ClickGui
 extends Module {
     private static ClickGui INSTANCE;
-    public final EnumSetting<Style> style = this.add(new EnumSetting<Style>("Style", Style.Default).injectTask(this::updateStyle));
+    public final EnumSetting<Style> style = this.add(new EnumSetting<Style>("Style", Style.Dark).injectTask(this::updateStyle));
     public final BooleanSetting autoSave = this.add(new BooleanSetting("AutoSave", true));
     public final BooleanSetting font = this.add(new BooleanSetting("Font", true));
     public final BooleanSetting shadow = this.add(new BooleanSetting("Shadow", true));
@@ -52,6 +52,7 @@ extends Module {
     public final SliderSetting alpha = this.add(new SliderSetting("Alpha", 220, 0, 255));
     public final SliderSetting hoverAlpha = this.add(new SliderSetting("HoverAlpha", 255, 0, 255));
     public final SliderSetting topAlpha = this.add(new SliderSetting("TopAlpha", 180, 0, 255));
+    public final SliderSetting backgroundAlpha = this.add(new SliderSetting("BackgroundAlpha", 236, 0, 255));
     public final BooleanSetting fade = this.add(new BooleanSetting("Fade", true).setParent());
     public final SliderSetting length = this.add(new SliderSetting("Length", 250, 0, 1000, this.fade::isOpen));
     public final EnumSetting<Easing> easing = this.add(new EnumSetting<Easing>("Easing", Easing.Expo, this.fade::isOpen));
@@ -63,11 +64,11 @@ extends Module {
     public final BooleanSetting colors = this.add(new BooleanSetting("Colors", false).setParent().injectTask(this::elementCodec));
     public final ColorSetting color = this.add(new ColorSetting("Color", new Color(0, 120, 212), this.colors::isOpen));
     public final ColorSetting activeColor = this.add(new ColorSetting("ActiveColor", new Color(0, 120, 212), this.colors::isOpen));
-    public final ColorSetting hoverColor = this.add(new ColorSetting("HoverColor", new Color(230, 242, 251, 200), this.colors::isOpen));
-    public final ColorSetting defaultColor = this.add(new ColorSetting("DefaultColor", new Color(255, 255, 255, 236), this.colors::isOpen));
-    public final ColorSetting defaultTextColor = this.add(new ColorSetting("DefaultTextColor", new Color(30, 30, 30), this.colors::isOpen));
-    public final ColorSetting enableTextColor = this.add(new ColorSetting("EnableTextColor", new Color(24, 24, 24), this.colors::isOpen));
-    public final ColorSetting backGround = this.add(new ColorSetting("BackGround", new Color(255, 255, 255, 236), this.colors::isOpen).injectBoolean(true));
+    public final ColorSetting hoverColor = this.add(new ColorSetting("HoverColor", new Color(50, 50, 50, 200), this.colors::isOpen));
+    public final ColorSetting defaultColor = this.add(new ColorSetting("DefaultColor", new Color(30, 30, 30, 236), this.colors::isOpen));
+    public final ColorSetting defaultTextColor = this.add(new ColorSetting("DefaultTextColor", new Color(220, 220, 220), this.colors::isOpen));
+    public final ColorSetting enableTextColor = this.add(new ColorSetting("EnableTextColor", new Color(255, 255, 255), this.colors::isOpen));
+    public final ColorSetting backGround = this.add(new ColorSetting("BackGround", new Color(30, 30, 30, 236), this.colors::isOpen).injectBoolean(true));
     public final ColorSetting tint = this.add(new ColorSetting("Tint", new Color(12, 60, 95, 56)).injectBoolean(true));
     public final ColorSetting endColor = this.add(new ColorSetting("End", new Color(255, 120, 240, 72), () -> this.tint.booleanValue));
     public double alphaValue;
