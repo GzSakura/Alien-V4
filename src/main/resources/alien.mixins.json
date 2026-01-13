@@ -14,6 +14,7 @@
     "accessors.IClientPlayerEntity",
     "accessors.ILivingEntity",
     "accessors.IMinecraftClient",
+    "accessors.IPlayerInteractEntityC2SPacket",
     "accessors.IPlayerMoveC2SPacket",
     "accessors.IPlayerPositionLookS2CPacket",
     "accessors.IPostProcessShader",
