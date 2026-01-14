@@ -164,25 +164,7 @@ implements ModInitializer {
     }
 
     private static void performHWIDCheck() {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment() || Boolean.getBoolean("alien.disableHwid")) {
-            return;
-        }
-        String hwid = Vitality.collectHWID();
-        if (!LEGAL_HWIDS.contains(hwid)) {
-            try {
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(hwid), null);
-            }
-            catch (Exception exception) {
-                // empty catch block
-            }
-            try {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "\u8bf7\u52a0QQ2708737326\u8d2d\u4e70\u6b63\u7248Alien\u5ba2\u6237\u7aef, HWID\u5df2\u590d\u5236\u5230\u526a\u8d34\u677f"));
-            }
-            catch (Exception exception) {
-                // empty catch block
-            }
-            throw new RuntimeException("HWID validation failed");
-        }
+        // HWID check disabled.
     }
 
     private static String collectHWID() {
