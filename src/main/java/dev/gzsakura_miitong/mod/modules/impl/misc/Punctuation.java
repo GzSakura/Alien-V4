@@ -67,10 +67,8 @@ extends Module {
     private final BooleanSetting sound = this.add(new BooleanSetting("Sound", true));
     private final SliderSetting clearTime = this.add(new SliderSetting("ClearTime", 10.0, 0.0, 100.0, 0.1).setSuffix("s"));
     private final ColorSetting color = this.add(new ColorSetting("Color", new Color(255, 255, 255, 100)));
-    private final BindSetting enemySpot = this.add(new BindSetting("EnemySpot", -1));
     private final StringSetting key = this.add(new StringSetting("EncryptKey", "IDKWTFTHIS"));
     private final ConcurrentHashMap<String, Spot> waypoint = new ConcurrentHashMap();
-    private boolean pressed = false;
 
     public Punctuation() {
         super("Punctuation", Module.Category.Misc);
@@ -98,17 +96,6 @@ extends Module {
     @EventListener
     public void onUpdate(UpdateEvent event) {
         this.waypoint.values().removeIf(t -> t.timer.passedS(this.clearTime.getValue()));
-        if (this.enemySpot.isPressed() && Punctuation.mc.currentScreen == null) {
-            HitResult hitResult;
-            if (!this.pressed && (hitResult = mc.getCameraEntity().raycast(256.0, 0.0f, false)) instanceof BlockHitResult) {
-                BlockHitResult blockHitResult = (BlockHitResult)hitResult;
-                BlockPos pos = blockHitResult.getBlockPos();
-                Punctuation.mc.player.networkHandler.sendChatMessage(this.Encrypt("EnemyHere{" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "," + this.color.getValue().getRGB() + "}"));
-            }
-            this.pressed = true;
-        } else {
-            this.pressed = false;
-        }
     }
 
     @Override
@@ -167,7 +154,7 @@ extends Module {
             if (s == null) {
                 return;
             }
-            String decrypt = this.Decrypt(s.replaceAll("\u00a7[keyCodec-zA-Z0-9]", "").replaceAll("<[^>]*> ", ""));
+            String decrypt = this.Decrypt(s.replaceAll("\u00a7[0-9a-fk-or]", "").replaceAll("<[^>]*> ", ""));
             if (decrypt == null) {
                 return;
             }
@@ -264,19 +251,7 @@ extends Module {
         }
     }
 
-    public String Encrypt(String strToEncrypt) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            SecretKeySpec secretKey = Punctuation.getKey(this.key.getValue());
-            byte[] iv = new byte[16];
-            IvParameterSpec ivParams = new IvParameterSpec(iv);
-            cipher.init(1, (Key)secretKey, ivParams);
-            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
+
 
     private record Spot(String name, BlockPos pos, Color color, Timer timer) {
     }
